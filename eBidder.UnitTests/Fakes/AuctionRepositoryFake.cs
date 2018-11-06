@@ -18,13 +18,14 @@ namespace eBidder.UnitTests.Fakes
 
         public Auction CreateAuction(Auction auction)
         {
+            auction.Bids = new List<Bid>{};
             _auctions.Add(auction);
             return auction;
         }
 
         public IEnumerable<Auction> GetAuctionByUsername(string username)
         {
-            return _auctions.Where(a => a.Seller.Username == username);
+            return _auctions.Where(a => a.Seller.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
 
         public IEnumerable<Auction> GetAuctions()
@@ -34,21 +35,14 @@ namespace eBidder.UnitTests.Fakes
 
         public IEnumerable<Auction> GetAuctionsWithUsersBid(string username)
         {
-            return _auctions.Where(x => x.Bids.Any(b => b.Bidder.Username == username));
+            return _auctions.Where(x => x.Bids.Any(b => b.Bidder.Username.Equals(username, StringComparison.OrdinalIgnoreCase)));
         }
 
         public bool PlaceBid(User username, Auction auction, float amount)
         {
-            try 
-            {
-                var biddedAuction = _auctions.First(x => x == auction);
-                biddedAuction.Bids.Add(new Bid { Amount = amount, Bidder = username });
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var biddedAuction = _auctions.First(x => x == auction);
+            biddedAuction.Bids.Add(new Bid { Amount = amount, Bidder = username });
+            return true;
         }
     }
 }
