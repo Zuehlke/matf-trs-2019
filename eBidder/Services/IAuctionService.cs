@@ -5,11 +5,13 @@ namespace eBidder.Services
 {
     public interface IAuctionService
     {
-        AuctionViewModel CreateAuction(string username, AuctionItemViewModel auctionViewModel, int auctionState = 1);
+        AuctionViewModel CreateAuction(string username, AuctionItemViewModel auctionItemViewModel, int auctionState = 1);
 
-        bool PlaceBid(string username, AuctionViewModel auctionViewModel);
+        AuctionViewModel CreateAuction(AuctionViewModel auctionViewModel);
 
-        void CloseAuction(AuctionViewModel auctionViewModel);
+        AuctionViewModel PlaceBid(string username, AuctionViewModel auctionViewModel);
+
+        AuctionViewModel CloseAuction(AuctionViewModel auctionViewModel);
 
         IEnumerable<AuctionViewModel> GetAllAuctions();
 

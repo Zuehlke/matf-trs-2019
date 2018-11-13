@@ -11,10 +11,10 @@ namespace eBidder.Repositories
 
         Auction CreateAuction(Auction auction);
 
-        bool PlaceBid(User username, Auction auction, float amount);
+        Auction PlaceBid(User username, Auction auction, float amount);
 
         IEnumerable<Auction> GetAuctionsWithUsersBid(string username);
 
-        void CloseAuction(Auction auction);
+        Auction CloseAuction(Auction auction);
     }
 }

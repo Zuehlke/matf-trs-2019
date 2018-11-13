@@ -43,7 +43,7 @@ namespace eBidder.Repositories
             return newAuction;
         }
 
-        public bool PlaceBid(User user, Auction auction, float amount)
+        public Auction PlaceBid(User user, Auction auction, float amount)
         {
             var auctionDb = GetAuctionFromDb(auction);
             var newBid = SetNewBidForAuction(user, amount, auctionDb);
@@ -51,28 +51,28 @@ namespace eBidder.Repositories
             _context.Bids.Add(newBid);
             _context.SaveChanges();
 
-            return true;
+            return auctionDb;
         }
 
         public IEnumerable<Auction> GetAuctionsWithUsersBid(string username)
         {
             var user = _context.Users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
-            var auctionsWithUserBids = _context.Auctions
+            return _context.Auctions
                 .Include(x => x.Seller)
                 .Include(x => x.AuctionItem)
                 .Include(x => x.Bids.Select(b => b.Bidder))
-                .Where(a => a.Bids.Any(b => b.Bidder.UserId.Equals(user.UserId)));
-
-            return auctionsWithUserBids.ToList();
+                .Where(a => a.Bids.Any(b => b.Bidder.Username.Equals(user.Username))).ToList();
         }
 
 
-        public void CloseAuction(Auction auction)
+        public Auction CloseAuction(Auction auction)
         {
             var auctionFromDb = GetAuctionFromDb(auction);
             auctionFromDb.AuctionState = AuctionState.Closed;
             _context.SaveChanges();
+
+            return auctionFromDb;
         }
 
         private static Expression<Func<Auction, bool>> HasSameSellerAndItem(Auction auction)

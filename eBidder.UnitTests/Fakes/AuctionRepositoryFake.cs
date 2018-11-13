@@ -38,11 +38,16 @@ namespace eBidder.UnitTests.Fakes
             return _auctions.Where(x => x.Bids.Any(b => b.Bidder.Username.Equals(username, StringComparison.OrdinalIgnoreCase)));
         }
 
-        public bool PlaceBid(User username, Auction auction, float amount)
+        public Auction PlaceBid(User username, Auction auction, float amount)
         {
             var biddedAuction = _auctions.First(x => x == auction);
             biddedAuction.Bids.Add(new Bid { Amount = amount, Bidder = username });
-            return true;
+            return biddedAuction;
+        }
+
+        Auction IAuctionRepository.CloseAuction(Auction auction)
+        {
+            throw new NotImplementedException();
         }
     }
 }

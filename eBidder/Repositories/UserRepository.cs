@@ -14,11 +14,6 @@ namespace eBidder.Repositories
             _context = context;
         }
 
-        public UserRepository()
-        {
-            _context = new ApplicationDbContext();
-        }
-
         public User GetByUsername(string username)
         {
             return GetUser(username);
@@ -47,15 +42,6 @@ namespace eBidder.Repositories
         {
             var existingUser = GetUser(username);
 
-            if (existingUser == null)
-            {
-                throw new InvalidOperationException($"User {username} doesn't exist.");
-            }
-            if (!existingUser.Password.Equals(oldPassword))
-            {
-                throw new ArgumentException("Wrong password for the user");
-            }
-
             existingUser.Password = newPassword;
             _context.SaveChanges();
 
@@ -64,12 +50,7 @@ namespace eBidder.Repositories
 
         public bool DeleteUser(string username)
         {
-            User existingUser = GetUser(username);
-
-            if (existingUser == null)
-            {
-                return false;
-            }
+            var existingUser = GetUser(username);
 
             _context.Users.Remove(existingUser);
             _context.SaveChanges();

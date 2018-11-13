@@ -17,27 +17,7 @@ namespace eBidder.Repositories
 
         public void CreateRecord(string username, string reference, string action, string details)
         {
-            if (string.IsNullOrEmpty(username))
-            {
-                throw new ArgumentNullException("username must be defined");
-            }
-
             var user = GetUser(username);
-
-            if (user == null)
-            {
-                throw new ArgumentException("user with given username doesn't exist");
-            }
-
-            if (string.IsNullOrEmpty(reference))
-            {
-                throw new ArgumentNullException("reference must be defined");
-            }
-
-            if (string.IsNullOrEmpty(action))
-            {
-                throw new ArgumentNullException("action must be defined");
-            }
 
             var auctionRecord = new AuctionRecord
             {
@@ -66,11 +46,6 @@ namespace eBidder.Repositories
         public IEnumerable<AuctionRecord> GetAuditRecordsForUser(string username)
         {
             var user = GetUser(username);
-
-            if (user == null)
-            {
-                throw new ArgumentException("user with given username doesn't exist");
-            }
 
             return _context.AuctionRecords
                 .Include(x => x.User)
