@@ -38,6 +38,8 @@ namespace eBidder.UnitTests.Mocks
                           .Callback((string username, string oldPassword, string newPassword) => (_users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase))).Password = newPassword)
                           .Returns((string username, string oldPassword, string newPassword) => (_users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase))));
 
+            // TODO (ispit): Add missing mocked method implementations!
+
             return fakeRepository.Object;
         }
     }

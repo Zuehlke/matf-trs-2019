@@ -165,7 +165,6 @@ namespace eBidder.UnitTests.Services
             var userService = CreateUserService();
             userService.CreateUser(username, password);
 
-            // TODO: Apply "Local functions" feature here to separate Act and Assert 
             Assert.That(() => userService.CreateUser(username, password), Throws.InvalidOperationException);
         }
     }
