@@ -1,4 +1,5 @@
-﻿using eBidder.Services;
+﻿using System;
+using eBidder.Services;
 using eBidder.UnitTests.Mocks;
 using NUnit.Framework;
 
@@ -6,8 +7,6 @@ namespace eBidder.UnitTests.Services
 {
     public class WalletServiceTest
     {
-        // TODO (ispit): Rename the UPPERCASE part of the test methods to fit Gherkin convention
-
         private IWalletService _walletService;
         private IUserService _userService;
 
@@ -23,31 +22,54 @@ namespace eBidder.UnitTests.Services
         [Test]
         public void GivenUser_WhenAddMoney_ThenMoneyIncreased()
         {
-            Assert.Fail();
+            // Arrange 
+            var user = _userService.CreateUser("Zoran", "123456");
+            // Act
+
+            _walletService.AddMoney("Zoran", 100);
+
+            // Assert
+            var actual = _walletService.GetMoney("Zoran");
+            Assert.AreEqual(100, actual);
         }
 
         [Test]
-        public void GivenNullUsername_WhenAddMoney_DESCRIBE_DESIRED_POSITIVE_OUTCOME()
+        public void GivenNullUsername_WhenAddMoney_ThenArgumentNullExceptionIsThrown()
         {
-            Assert.Fail();
+            // AAA
+            Assert.Throws<ArgumentNullException>(() =>_walletService.AddMoney(null, 1000));
         }
 
         [Test]
-        public void ADD_MONEY_FOR_NON_EXISTING_USER()
+        public void GivenUsernameOfNonExistingUser_WhenAddMoneyIsCalled_ThenInvalidOperationExceptionIsThrown()
         {
-            Assert.Fail();
+            // AAA
+            Assert.Throws<InvalidOperationException>(() => _walletService.AddMoney("Bojan", 1000));
         }
 
         [Test]
-        public void ADD_NEGATIVE_AMOUNT_FOR_MONEY()
+        public void GivenUsernameForExistingUser_WhenAddingNegativeAmount_ThenInvalidOperationExceptionIsThorwn()
         {
-            Assert.Fail();
+            // Arrange 
+            var user = _userService.CreateUser("Zoran", "123456");
+            
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => _walletService.AddMoney("Zoran", -100));
         }
 
         [Test]
         public void GivenUserWithSufficientMoney_WhenRemoveMoney_ThenMoneyDecreased()
         {
-            Assert.Fail();
+            // Arrange 
+            var user = _userService.CreateUser("Zoran", "123456");
+            // Act
+
+            _walletService.AddMoney("Zoran", 100);
+            _walletService.RemoveMoney("Zoran", 50);
+
+            // Assert
+            var actual = _walletService.GetMoney("Zoran");
+            Assert.AreEqual(50, actual);
         }
     }
 }

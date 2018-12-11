@@ -38,7 +38,16 @@ namespace eBidder.UnitTests.Mocks
                           .Callback((string username, string oldPassword, string newPassword) => (_users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase))).Password = newPassword)
                           .Returns((string username, string oldPassword, string newPassword) => (_users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase))));
 
-            // TODO (ispit): Add missing mocked method implementations!
+            fakeRepository.Setup(x => x.AddMoney(It.IsAny<string>(), It.IsAny<double>()))
+                .Callback((string username, double money) =>
+                    _users.First(user => user.Username == username).Money += money);
+
+            fakeRepository.Setup(x => x.GetMoney(It.IsAny<string>()))
+                .Returns((string username) => _users.First(user => user.Username == username).Money );
+
+            fakeRepository.Setup(x => x.RemoveMoney(It.IsAny<string>(), It.IsAny<double>()))
+                .Callback((string username, double money) =>
+                    _users.First(user => user.Username == username).Money -= money);
 
             return fakeRepository.Object;
         }
