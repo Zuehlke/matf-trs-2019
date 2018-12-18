@@ -74,6 +74,17 @@ namespace eBidder.Repositories
             _context.SaveChanges();
         }
 
+        public void TransferMoney(string fromUser, string toUser, double value)
+        {
+            var userFrom = GetUser(fromUser);
+            userFrom.Money -= value;
+
+            var userTo = GetUser(toUser);
+            userTo.Money += value;
+
+            _context.SaveChanges();
+        }
+
         public double GetMoney(string username)
         {
             return GetUser(username).Money;

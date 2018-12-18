@@ -160,6 +160,8 @@
     <Compile Include="Domain\AuctionRecord.cs" />
     <Compile Include="Domain\AuctionState.cs" />
     <Compile Include="Domain\Bid.cs" />
+    <Compile Include="Domain\TransactionLog.cs" />
+    <Compile Include="Domain\TransactionStatus.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,7 +180,9 @@
     <Compile Include="Repositories\AuditRepository.cs" />
     <Compile Include="Repositories\IAuctionRepository.cs" />
     <Compile Include="Repositories\IAuditRepository.cs" />
+    <Compile Include="Repositories\ITransactionLogRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Repositories\TransactionLogRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Services\AuctionService.cs" />

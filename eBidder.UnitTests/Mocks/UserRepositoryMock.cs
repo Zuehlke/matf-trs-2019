@@ -48,6 +48,7 @@ namespace eBidder.UnitTests.Mocks
             fakeRepository.Setup(x => x.RemoveMoney(It.IsAny<string>(), It.IsAny<double>()))
                 .Callback((string username, double money) =>
                     _users.First(user => user.Username == username).Money -= money);
+            // TODO (ispit): Add missing methods mock implementation
 
             return fakeRepository.Object;
         }

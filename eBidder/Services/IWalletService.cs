@@ -1,4 +1,7 @@
-﻿namespace eBidder.Services
+﻿using System.Collections.Generic;
+using eBidder.Domain;
+
+namespace eBidder.Services
 {
     public interface IWalletService
     {
@@ -7,5 +10,9 @@
         double GetMoney(string username);
 
         void RemoveMoney(string username, double amount);
+
+        void Transfer(string fromUser, string toUser, double amount);
+
+        IEnumerable<TransactionLog> GetTransactionLogs();
     }
 }

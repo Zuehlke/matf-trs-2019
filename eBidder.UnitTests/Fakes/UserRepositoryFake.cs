@@ -63,6 +63,11 @@ namespace eBidder.UnitTests.Fakes
             throw new NotImplementedException();
         }
 
+        public void TransferMoney(string fromUser, string toUser, double value)
+        {
+            throw new NotImplementedException();
+        }
+
         public double GetMoney(string username)
         {
             throw new NotImplementedException();

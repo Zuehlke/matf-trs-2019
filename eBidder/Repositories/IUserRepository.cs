@@ -19,6 +19,8 @@ namespace eBidder.Repositories
 
         void RemoveMoney(string username, double value);
 
+        void TransferMoney(string fromUser, string toUser, double value);
+
         double GetMoney(string username);
     }
 }

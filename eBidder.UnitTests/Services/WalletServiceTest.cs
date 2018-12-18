@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using eBidder.Domain;
 using eBidder.Services;
 using eBidder.UnitTests.Mocks;
 using NUnit.Framework;
@@ -13,10 +15,11 @@ namespace eBidder.UnitTests.Services
         [SetUp]
         public void Init()
         {
-            var fakeUserRepository = new UserRepositoryMock().CreateRepository();
+            var mockedUserRepository = new UserRepositoryMock().CreateRepository();
+            var mockedTransactionLogRepository = new TransactionLogRepositoryMock().CreateRepository();
 
-            _userService = new UserService(fakeUserRepository);
-            _walletService = new WalletService(fakeUserRepository);
+            _userService = new UserService(mockedUserRepository);
+            _walletService = new WalletService(mockedUserRepository, mockedTransactionLogRepository);
         }
 
         [Test]
@@ -70,6 +73,36 @@ namespace eBidder.UnitTests.Services
             // Assert
             var actual = _walletService.GetMoney("Zoran");
             Assert.AreEqual(50, actual);
+        }
+
+        [Test]
+        public void TEST1()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void TEST2()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void TEST3()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void TEST4()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void TEST5()
+        {
+            Assert.Fail();
         }
     }
 }
