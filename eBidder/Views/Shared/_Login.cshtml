@@ -1,0 +1,20 @@
+﻿@if (UserSession.CurrentUser != null)
+{
+    using (Html.BeginForm("LogOff", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + UserSession.CurrentUser.Username + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Home" })
+
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Log in", "Login", "Login", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink("Register", "Register", "Register", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    </ul>
+}

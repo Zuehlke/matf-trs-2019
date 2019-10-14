@@ -1,0 +1,50 @@
+﻿@model eBidder.Models.AuctionViewModel
+<div class="tile-container">
+    @RenderPage()
+</div>
+
+@helper RenderPage()
+{
+<div class="tile-content">
+    <h1>@Model.AuctionItem.Name</h1>
+    @Html.LabelFor(m => m.Seller) : @Model.Seller<br />
+    @Html.LabelFor(m => m.AuctionItem.Description) : @Model.AuctionItem.Description <br />
+    @Html.LabelFor(m => m.MinAmount) : @Model.MinAmount$<br />
+    @Html.LabelFor(m => m.UserAmount) : @Model.UserAmount$<br />
+    @Html.TextBoxFor(m => m.BidAmount, new { @class="bid-textbox", placeholder = Html.DisplayNameFor(x => x.BidAmount)})
+
+    @BindValues()
+    <input type="submit" class="bid-button" value="Make an offer" style="margin-top: 2px;" />
+    @{
+    var first = true;
+    var bidTitle = @Model.Bids.Any() ? "All bids" : "No bids";
+    }
+    <div class="tile-bids">
+        <b>@bidTitle</b> <br />
+        @foreach (var auctionBid in Model.Bids.OrderByDescending(b => b))
+        {
+        if (first)
+        {
+            <span><em><b>Currently winning: </b></em> @auctionBid$</span> <br />
+        first = false;
+        }
+        <span class="tile-bid">Bid: @auctionBid$</span> <br />
+        }
+    </div>
+</div>
+}
+
+@helper BindValues()
+{
+    @Html.HiddenFor(m => m.AuctionItem.Name)
+    @Html.HiddenFor(m => m.AuctionItem.Description)
+    @Html.HiddenFor(m => m.AuctionItem.MinAmount)
+
+    @Html.HiddenFor(m => m.Seller)
+    @Html.HiddenFor(m => m.UserAmount)
+    @Html.HiddenFor(m => m.MinAmount)
+    @Html.HiddenFor(m => m.AuctionState)
+    @Html.HiddenFor(m => m.Bids)
+    @Html.HiddenFor(m => m.EndDate)
+    @Html.HiddenFor(m => m.StartDate)
+}

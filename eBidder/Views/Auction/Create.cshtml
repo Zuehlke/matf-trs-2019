@@ -1,0 +1,40 @@
+﻿@model eBidder.Models.AuctionItemViewModel
+@{
+    ViewBag.Title = "Create auction";
+}
+
+<h2 style="text-align: center">@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Create", "Auction", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.MinAmount, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.MinAmount, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="bid-button" value="Create" />
+        </div>
+    </div>
+}
+<span style="color: red">@ViewBag.ErrorMessage</span>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

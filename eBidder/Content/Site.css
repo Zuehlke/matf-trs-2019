@@ -1,0 +1,70 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: white;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+footer {
+    margin: 10px;
+    text-align: center;
+}
+
+.tile-container {
+    display: inline-flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: solid 5px black;
+    border-radius: 30px;
+    padding: 5px;
+    margin: 5px;
+    width: 250px;
+    background-color: aliceblue;
+    align-content: center;
+}
+
+.tile-content {
+    width: 100%;
+}
+
+.tile-bids {
+    padding: 2px;
+}
+
+.bid-button {
+    width: 100%;
+    background-color: mediumpurple;
+    height: 35px;
+    font-weight: bold;
+    opacity: 0.9;
+    font-size: medium;
+}
+
+.bid-button:hover {
+    opacity: 1;
+}
+
+.bid-textbox {
+    width: 100%;
+    height: 30px;
+}
