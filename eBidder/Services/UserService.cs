@@ -3,6 +3,7 @@ using System.Linq;
 using eBidder.Mappers;
 using eBidder.Models;
 using eBidder.Repositories;
+using System;
 
 namespace eBidder.Services
 {
@@ -33,6 +34,11 @@ namespace eBidder.Services
 
         public UserViewModel CreateUser(string username, string password)
         {
+            if(_userRepository.GetByUsername(username) != null)
+            {
+                throw new ArgumentException($"User with given username: {username} already exists.");
+            }
+
             return _userRepository.CreateUser(username, password).ToUserViewModel();
         }
 

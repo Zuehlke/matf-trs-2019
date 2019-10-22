@@ -14,6 +14,11 @@ namespace eBidder.Repositories
             _context = context;
         }
 
+        public UserRepository()
+        {
+            _context = new ApplicationDbContext();
+        }
+
         public User GetByUsername(string username)
         {
             return GetUser(username);
