@@ -25,31 +25,68 @@ namespace eBidder.UnitTests.Services
         [Test]
         public void GivenEmptyRepo_WhenGetUserByName_ThenUserNotExist()
         {
-            Assert.Fail();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+
+            // Act
+            var result = userService.GetByUsername("stefan");
+
+            // Assert
+            Assert.IsNull(result);
         }
 
         [Test]
         public void GivenUser_WhenPasswordChanged_ThenPasswordHasNewValue()
         {
-            Assert.Fail();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            fakeRepository.CreateUser("stefan", "test123");
+
+            // Act
+            var result = userService.ChangePassword("stefan", "test123", "test456");
+
+            // Assert
+            Assert.AreEqual("test456", result.Password);
         }
 
         [Test]
         public void GetByExistingUserNameTest()
         {
-            Assert.Fail();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            fakeRepository.CreateUser("stefan", "test123");
+
+            // Act
+            var result = userService.GetByUsername("stefan");
+
+            // Assert
+            Assert.AreEqual("stefan", result.Username);
         }
 
         [Test]
         public void ChangePasswordForNonExistingUser()
         {
-            Assert.Fail();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+
+            // Act and assert
+            Assert.Throws<System.InvalidOperationException>(() => userService.ChangePassword("aleksandar", "test123", "test456"));
         }
 
         [Test]
         public void ChangePasswordWithWrongOldPasswords()
         {
-            Assert.Fail();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            fakeRepository.CreateUser("stefan", "test123");
+
+            // Act and assert
+            Assert.Throws<System.ArgumentException>(() => userService.ChangePassword("stefan", "test", "test456"));
         }
     }
 }
