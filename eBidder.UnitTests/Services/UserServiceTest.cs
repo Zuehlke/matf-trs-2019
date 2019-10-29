@@ -1,4 +1,5 @@
-﻿using eBidder.Repositories;
+﻿using System;
+using eBidder.Repositories;
 using eBidder.Services;
 using eBidder.UnitTests.Fakes;
 using NUnit.Framework;
@@ -87,6 +88,36 @@ namespace eBidder.UnitTests.Services
 
             // Act and assert
             Assert.Throws<System.ArgumentException>(() => userService.ChangePassword("stefan", "test", "test456"));
+        }
+
+        [Test]
+        public void GetUser_PositiveTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void GetUser_WhenRepositoryIsEmpty()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void DeleteUser_PositiveTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void DeleteUser_WhenRepositoryIsEmpty()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CreateUser_WhenUserAlreadyExists()
+        {
+            throw new NotImplementedException();
         }
     }
 }
