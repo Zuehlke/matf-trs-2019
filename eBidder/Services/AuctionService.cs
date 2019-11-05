@@ -26,7 +26,6 @@ namespace eBidder.Services
 
         public AuctionService(IAuctionRepository auctionRepository, IUserRepository userRepository, IAuditRepository auditRepository)
         {
-            var unitOfWork = new UnitOfWork();
             _auctionRepository = auctionRepository;
             _userRepository = userRepository;
             _auditRepository = auditRepository;
