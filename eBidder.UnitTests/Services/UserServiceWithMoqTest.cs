@@ -81,7 +81,6 @@ namespace eBidder.UnitTests.Services
             // Arrange
             UserService userService = CreateUserService();
 
-            // Not good
             // Act and assert together (check below for solution in these situations)
             Assert.That(() => userService.ChangePassword(username, password, newPassword), Throws.InvalidOperationException);
         }
