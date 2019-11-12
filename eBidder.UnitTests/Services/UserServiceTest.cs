@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using eBidder.Repositories;
 using eBidder.Services;
 using eBidder.UnitTests.Fakes;
@@ -75,7 +76,7 @@ namespace eBidder.UnitTests.Services
             var userService = new UserService(fakeRepository);
 
             // Act and assert
-            Assert.Throws<System.InvalidOperationException>(() => userService.ChangePassword("aleksandar", "test123", "test456"));
+            Assert.Throws<InvalidOperationException>(() => userService.ChangePassword("aleksandar", "test123", "test456"));
         }
 
         [Test]
@@ -87,37 +88,78 @@ namespace eBidder.UnitTests.Services
             fakeRepository.CreateUser("stefan", "test123");
 
             // Act and assert
-            Assert.Throws<System.ArgumentException>(() => userService.ChangePassword("stefan", "test", "test456"));
+            Assert.Throws<ArgumentException>(() => userService.ChangePassword("stefan", "test", "test456"));
         }
 
         [Test]
-        public void GetUser_PositiveTest()
+        public void GivenRepositoryWithOneUser_WhenCallingGetUser_UserFromRepositoryIsReturned()
         {
-            throw new NotImplementedException();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            fakeRepository.CreateUser("stefan", "test123");
+            
+            // Act
+            var user = userService.GetByUsername("stefan");
+
+            // Assert
+            Assert.AreEqual("stefan", user.Username);
         }
 
         [Test]
-        public void GetUser_WhenRepositoryIsEmpty()
+        public void GivenEmptyRepository_WhenGetUserIsCalled_NullIsReturned()
         {
-            throw new NotImplementedException();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+
+            // Act
+            var user = userService.GetByUsername("stefan");
+
+            // Assert
+            Assert.IsNull(user);
         }
 
         [Test]
-        public void DeleteUser_PositiveTest()
+        public void GivenRepositoryWithASingleUser_WhenDeleteUserIsCalled_GetUsersReturnsEmptyList()
         {
-            throw new NotImplementedException();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            fakeRepository.CreateUser("stefan", "test123");
+            
+            // Act
+            userService.DeleteUser("stefan");
+            var allUsers = userService.GetUsers();
+
+            // Assert
+            Assert.IsEmpty(allUsers);
         }
 
         [Test]
-        public void DeleteUser_WhenRepositoryIsEmpty()
+        public void GivenEmptyRepository_WhenDeleteUserIsCalled_FalseIsReturnedAsSuccessIndicator()
         {
-            throw new NotImplementedException();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            
+            // Act
+            var successfullyDeleted = userService.DeleteUser("stefan");
+
+            // Assert
+            Assert.IsFalse(successfullyDeleted);
         }
 
         [Test]
-        public void CreateUser_WhenUserAlreadyExists()
+        public void GivenARepositoryWithOneExistingUser_WhenCreateUserIsCalled_AndUserAlreadyExists_InvalidOperationExceptionIsThrown()
         {
-            throw new NotImplementedException();
+            // Arrange
+            var fakeRepository = new UserRepositoryFake();
+            var userService = new UserService(fakeRepository);
+            userService.CreateUser("stefan", "test123");
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => userService.CreateUser("stefan", "test345"));
         }
     }
 }
