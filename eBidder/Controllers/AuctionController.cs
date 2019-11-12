@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using eBidder.Anotations;
 using eBidder.Models;
+using eBidder.Repositories;
 using eBidder.Services;
 
 namespace eBidder.Controllers
@@ -14,6 +15,7 @@ namespace eBidder.Controllers
 
         public AuctionController()
         {
+            var unitOfWork = new UnitOfWork();
             _auctionService = new AuctionService();
         }
 

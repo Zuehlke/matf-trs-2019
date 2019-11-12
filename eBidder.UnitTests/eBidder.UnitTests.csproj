@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fakes\AuctionRepositoryFake.cs" />
+    <Compile Include="Fakes\AuditRepositoryFake.cs" />
     <Compile Include="Fakes\UserRepositoryFake.cs" />
     <Compile Include="Mocks\AuctionRepositoryMock.cs" />
     <Compile Include="Mocks\UserRepositoryMock.cs" />
