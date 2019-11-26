@@ -1,6 +1,7 @@
 ﻿using eBidder.Models;
 using eBidder.Repositories;
 using eBidder.Services;
+using eBidder.UnitTests.Builders;
 using eBidder.UnitTests.Mocks;
 using Moq;
 using NUnit.Framework;
@@ -184,6 +185,52 @@ namespace eBidder.UnitTests.Services
             // Assert
             Assert.AreEqual(newAuction.AuctionId, closedAuction.AuctionId);
             Assert.AreEqual(2, closedAuction.AuctionState);
+        }
+
+        [Test]
+        public void GivenAuctionWhenPlaceBidThenNewBidIsSaved()
+        {
+            // Arrange
+            _userService.CreateUser("anotherUser", password);
+            UserSession.CurrentUser = _userService.CreateUser(username, password);
+            var auction = new AuctionBuilder()
+                                .WithSeller("anotherUser")
+                                .WithMinAmount("100")
+                                .Build();
+
+            var newAuction = _auctionService.CreateAuction(auction);
+            newAuction.BidAmount = "150";
+
+            // Act
+            var biddedAuction = _auctionService.PlaceBid(username, newAuction);
+
+            // Assert
+            Assert.IsNotEmpty(biddedAuction.Bids);
+            Assert.AreEqual(150L, biddedAuction.Bids.FirstOrDefault());
+        }
+
+        [Test]
+        public void GivenAuctionWithSameSellerWhenPlaceBidThenExceptionIsThrown()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GivenAuctionWithSmallerBidAmountThenExceptionIsThrown()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GivenAuctionWithNoBidsWhenGetByUserBidsThenEmptyListReturned()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void GetAuctionsWithUsersBidPositiveTest()
+        {
+            Assert.Fail();
         }
     }
 }
