@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using eBidder.Repositories;
 using eBidder.Services;
 using eBidder.UnitTests.Fakes;
@@ -76,7 +75,7 @@ namespace eBidder.UnitTests.Services
             var userService = new UserService(fakeRepository);
 
             // Act and assert
-            Assert.Throws<InvalidOperationException>(() => userService.ChangePassword("aleksandar", "test123", "test456"));
+            Assert.Throws<System.InvalidOperationException>(() => userService.ChangePassword("aleksandar", "test123", "test456"));
         }
 
         [Test]
@@ -88,78 +87,63 @@ namespace eBidder.UnitTests.Services
             fakeRepository.CreateUser("stefan", "test123");
 
             // Act and assert
-            Assert.Throws<ArgumentException>(() => userService.ChangePassword("stefan", "test", "test456"));
+            Assert.Throws<System.ArgumentException>(() => userService.ChangePassword("stefan", "test", "test456"));
         }
 
         [Test]
-        public void GivenRepositoryWithOneUser_WhenCallingGetUser_UserFromRepositoryIsReturned()
+        public void GivenUser_WhenGetUsers_ThenListIsNotEmpty()
         {
-            // Arrange
             var fakeRepository = new UserRepositoryFake();
             var userService = new UserService(fakeRepository);
-            fakeRepository.CreateUser("stefan", "test123");
-            
-            // Act
-            var user = userService.GetByUsername("stefan");
+            userService.CreateUser("stefan", "pass");
 
-            // Assert
-            Assert.AreEqual("stefan", user.Username);
+            var result = userService.GetUsers();
+
+            Assert.IsNotEmpty(result);
         }
 
         [Test]
-        public void GivenEmptyRepository_WhenGetUserIsCalled_NullIsReturned()
+        public void GivenEmptyRepo_WhenGetUsers_ThenListIsEmpty()
         {
-            // Arrange
             var fakeRepository = new UserRepositoryFake();
             var userService = new UserService(fakeRepository);
 
-            // Act
-            var user = userService.GetByUsername("stefan");
+            var result = userService.GetUsers();
 
-            // Assert
-            Assert.IsNull(user);
+            Assert.IsEmpty(result);
         }
 
         [Test]
-        public void GivenRepositoryWithASingleUser_WhenDeleteUserIsCalled_GetUsersReturnsEmptyList()
+        public void GivenUser_WhenDeleteUser_ThenUserIsRemoved()
         {
-            // Arrange
             var fakeRepository = new UserRepositoryFake();
             var userService = new UserService(fakeRepository);
-            fakeRepository.CreateUser("stefan", "test123");
-            
-            // Act
-            userService.DeleteUser("stefan");
-            var allUsers = userService.GetUsers();
+            userService.CreateUser("stefan", "pass");
 
-            // Assert
-            Assert.IsEmpty(allUsers);
+            var result = userService.DeleteUser("stefan");
+
+            Assert.IsTrue(result);
         }
 
         [Test]
-        public void GivenEmptyRepository_WhenDeleteUserIsCalled_FalseIsReturnedAsSuccessIndicator()
+        public void GivenEmptyRepo_WhenDeleteUser_ThenUserIsNotFound()
         {
-            // Arrange
             var fakeRepository = new UserRepositoryFake();
             var userService = new UserService(fakeRepository);
-            
-            // Act
-            var successfullyDeleted = userService.DeleteUser("stefan");
 
-            // Assert
-            Assert.IsFalse(successfullyDeleted);
+            var result = userService.DeleteUser("stefan");
+
+            Assert.IsFalse(result);
         }
 
         [Test]
-        public void GivenARepositoryWithOneExistingUser_WhenCreateUserIsCalled_AndUserAlreadyExists_InvalidOperationExceptionIsThrown()
+        public void GivenUser_WhenCreateUserWithSameUsername_ThenExceptionIsThrown()
         {
-            // Arrange
             var fakeRepository = new UserRepositoryFake();
             var userService = new UserService(fakeRepository);
-            userService.CreateUser("stefan", "test123");
+            userService.CreateUser("stefan", "pass");
 
-            // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => userService.CreateUser("stefan", "test345"));
+            Assert.That(() => userService.CreateUser("stefan", "pass"), Throws.InvalidOperationException);
         }
     }
 }

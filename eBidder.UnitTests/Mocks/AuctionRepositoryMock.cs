@@ -16,7 +16,30 @@ namespace eBidder.UnitTests.Mocks
 
         internal IAuctionRepository CreateRepository()
         {
-            throw new NotImplementedException();
+            _auctions = new List<Auction>();
+
+            var fakeRepository = new Mock<IAuctionRepository>();
+
+            fakeRepository.Setup(x => x.GetAuctions()).Returns(() => _auctions);
+
+            fakeRepository.Setup(x => x.PlaceBid(It.IsAny<User>(), It.IsAny<Auction>(), It.IsAny<float>()))
+                          .Callback((User user, Auction auction, float amount) =>
+                                _auctions.FirstOrDefault((a => a.AuctionId == auction.AuctionId)).Bids = new List<Bid> { new Bid { Amount = amount, Bidder = user } })
+                          .Returns((User user, Auction auction, float amount) =>
+                                _auctions.FirstOrDefault((a => a.AuctionId == auction.AuctionId)));
+
+            fakeRepository.Setup(x => x.GetAuctionByUsername(It.IsAny<string>()))
+                        .Returns((string username) => _auctions.Where(a => a.Seller.Username.Equals(username, StringComparison.OrdinalIgnoreCase)));
+
+            fakeRepository.Setup(x => x.CreateAuction(It.IsAny<Auction>()))
+                           .Callback((Auction auction) => _auctions.Add(auction))
+                           .Returns((Auction auction) => _auctions.FirstOrDefault(a => a.AuctionId == auction.AuctionId));
+
+            fakeRepository.Setup(x => x.CloseAuction(It.IsAny<Auction>()))
+                          .Callback((Auction auction) => (_auctions.FirstOrDefault(a => a.AuctionId == auction.AuctionId)).AuctionState = AuctionState.Closed)
+                          .Returns((Auction auction) => _auctions.FirstOrDefault(a => a.AuctionId == auction.AuctionId));
+
+            return fakeRepository.Object;
         }
     }
 }

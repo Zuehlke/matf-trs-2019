@@ -65,6 +65,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\AuctionBuilder.cs" />
     <Compile Include="Fakes\AuctionRepositoryFake.cs" />
     <Compile Include="Fakes\AuditRepositoryFake.cs" />
     <Compile Include="Fakes\UserRepositoryFake.cs" />
