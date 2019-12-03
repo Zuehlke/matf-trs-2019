@@ -28,6 +28,9 @@ namespace eBidder.UnitTests.Mocks
                           .Returns((User user, Auction auction, float amount) =>
                                 _auctions.FirstOrDefault((a => a.AuctionId == auction.AuctionId)));
 
+            fakeRepository.Setup(x => x.GetAuctionsWithUsersBid(It.IsAny<string>()))
+                          .Returns((string username) => _auctions.Where(a => a.Bids.Any(b => b.Bidder.Username.Equals(username, StringComparison.OrdinalIgnoreCase))));
+
             fakeRepository.Setup(x => x.GetAuctionByUsername(It.IsAny<string>()))
                         .Returns((string username) => _auctions.Where(a => a.Seller.Username.Equals(username, StringComparison.OrdinalIgnoreCase)));
 

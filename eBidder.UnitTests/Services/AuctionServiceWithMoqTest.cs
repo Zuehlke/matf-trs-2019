@@ -53,12 +53,16 @@ namespace eBidder.UnitTests.Services
         {
             // Arrange
             _userService.CreateUser(username, password);
-            var auctionItem1 = new AuctionItemViewModel
-            {
-                Description = "Description",
-                MinAmount = "100",
-                Name = "Auction item"
-            };
+            var auctionItem1 = new AuctionItemBuilder()
+                                    .WithMinAmount("100")
+                                    .Build();
+                
+            //new AuctionItemViewModel
+            //{
+            //    Description = "Description",
+            //    MinAmount = "100",
+            //    Name = "Auction item"
+            //};
             var auctionItem2 =  new AuctionItemViewModel {
                 Description = "Description 2",
                 MinAmount = "100",
@@ -212,25 +216,92 @@ namespace eBidder.UnitTests.Services
         [Test]
         public void GivenAuctionWithSameSellerWhenPlaceBidThenExceptionIsThrown()
         {
-            Assert.Fail();
+            // Arrange
+            UserSession.CurrentUser = _userService.CreateUser(username, password);
+            var auction = new AuctionBuilder()
+                                .WithSeller(username)
+                                .WithMinAmount("100")
+                                .Build();
+
+            var newAuction = _auctionService.CreateAuction(auction);
+            newAuction.BidAmount = "150";
+
+            // Act
+            void PlaceBid()
+            {
+                _auctionService.PlaceBid(username, newAuction);
+            }
+
+            // Assert
+            Assert.That(() => PlaceBid(), Throws.InvalidOperationException);
         }
 
         [Test]
         public void GivenAuctionWithSmallerBidAmountThenExceptionIsThrown()
         {
-            Assert.Fail();
+            // Arrange
+            _userService.CreateUser("anotherUser", password);
+            UserSession.CurrentUser = _userService.CreateUser(username, password);
+            var auction = new AuctionBuilder()
+                                .WithSeller("anotherUser")
+                                .WithMinAmount("100")
+                                .Build();
+
+            var newAuction = _auctionService.CreateAuction(auction);
+            newAuction.BidAmount = "50";
+
+            // Act
+            void PlaceBid()
+            {
+                _auctionService.PlaceBid(username, newAuction);
+            }
+
+            // Assert
+            Assert.That(() => PlaceBid(), Throws.ArgumentException);
         }
 
         [Test]
         public void GivenAuctionWithNoBidsWhenGetByUserBidsThenEmptyListReturned()
         {
-            Assert.Fail();
+            // Arrange
+            _userService.CreateUser("anotherUser", password);
+            UserSession.CurrentUser = _userService.CreateUser(username, password);
+
+            var auction = new AuctionBuilder()
+                                .WithSeller("anotherUser")
+                                .WithMinAmount("100")
+                                .Build();
+            var newAuction = _auctionService.CreateAuction(auction);
+
+            // Act
+            var biddedAuctions = _auctionService.GetAuctionsWithUsersBid(username);
+
+            // Assert
+            Assert.IsEmpty(biddedAuctions);
         }
 
         [Test]
         public void GetAuctionsWithUsersBidPositiveTest()
         {
-            Assert.Fail();
+            // Arrange
+            _userService.CreateUser("anotherUser", password);
+            UserSession.CurrentUser = _userService.CreateUser(username, password);
+
+            var auction = new AuctionBuilder()
+                                .WithSeller("anotherUser")
+                                .WithMinAmount("100")
+                                .Build();
+            var newAuction = _auctionService.CreateAuction(auction);
+            newAuction.BidAmount = "150";
+            _auctionService.PlaceBid(username, newAuction);
+
+            // Act
+            var biddedAuctions = _auctionService.GetAuctionsWithUsersBid(username);
+
+            // Assert
+            Assert.IsNotEmpty(biddedAuctions);
+            Assert.AreEqual(1, biddedAuctions.Count());
+            Assert.AreEqual(150F, biddedAuctions.FirstOrDefault()?.Bids.FirstOrDefault());
         }
     }
 }
