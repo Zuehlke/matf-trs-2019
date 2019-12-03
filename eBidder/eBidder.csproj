@@ -184,7 +184,9 @@
     <Compile Include="Services\AuctionService.cs" />
     <Compile Include="Services\IAuctionService.cs" />
     <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\IWalletService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\WalletService.cs" />
     <Compile Include="UserSession.cs" />
   </ItemGroup>
   <ItemGroup>

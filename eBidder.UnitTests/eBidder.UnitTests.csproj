@@ -77,6 +77,7 @@
     <Compile Include="Services\AuctionServiceWithMoqTest.cs" />
     <Compile Include="Services\UserServiceTest.cs" />
     <Compile Include="Services\UserServiceWithMoqTest.cs" />
+    <Compile Include="Services\WalletServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

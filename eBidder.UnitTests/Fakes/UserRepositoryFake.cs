@@ -53,6 +53,21 @@ namespace eBidder.UnitTests.Fakes
             return _users.Remove(user);
         }
 
+        public void AddMoney(string username, double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveMoney(string username, double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double GetMoney(string username)
+        {
+            throw new NotImplementedException();
+        }
+
         public User GetByUsername(string username)
         {
             return GetUser(username);

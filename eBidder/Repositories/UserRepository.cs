@@ -58,6 +58,28 @@ namespace eBidder.Repositories
             return true;
         }
 
+        public void AddMoney(string username, double value)
+        {
+            var existingUser = GetUser(username);
+            existingUser.Money += value;
+
+            _context.SaveChanges();
+        }
+
+        public void RemoveMoney(string username, double value)
+        {
+            var existingUser = GetUser(username);
+            existingUser.Money -= value;
+
+            _context.SaveChanges();
+        }
+
+        public double GetMoney(string username)
+        {
+            return GetUser(username).Money;
+        }
+
+
         private User GetUser(string username)
         {
             return _context.Users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));

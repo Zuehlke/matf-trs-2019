@@ -14,5 +14,6 @@ namespace eBidder.Domain
 
         public virtual ICollection<Auction> Auctions { get; set; }
 
+        public double Money { get; set; }
     }
 }

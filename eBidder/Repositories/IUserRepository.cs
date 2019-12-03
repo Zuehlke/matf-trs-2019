@@ -14,5 +14,11 @@ namespace eBidder.Repositories
         User ChangePassword(string username, string oldPassword, string newPassword);
 
         bool DeleteUser(string username);
+
+        void AddMoney(string username, double value);
+
+        void RemoveMoney(string username, double value);
+
+        double GetMoney(string username);
     }
 }
