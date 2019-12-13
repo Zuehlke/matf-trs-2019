@@ -65,8 +65,8 @@ namespace eBidder.UnitTests.Services
         {
             // Arrange 
             var user = _userService.CreateUser("Zoran", "123456");
-            // Act
 
+            // Act
             _walletService.AddMoney("Zoran", 100);
             _walletService.RemoveMoney("Zoran", 50);
 

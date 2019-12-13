@@ -14,7 +14,6 @@ namespace eBidder.UnitTests.Mocks
             _logs = new List<TransactionLog>();
 
             var fakeRepository = new Mock<ITransactionLogRepository>();
-            // TODO (ispit): Add missing methods mock implementations
 
             fakeRepository.Setup(x => x.GetTransactionLogs())
                 .Returns(() => _logs);
