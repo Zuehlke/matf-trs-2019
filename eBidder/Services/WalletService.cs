@@ -35,6 +35,11 @@ namespace eBidder.Services
                 throw new InvalidOperationException("User cannot be found");
             }
 
+            if (amount <= 0)
+            {
+                throw new InvalidOperationException("Amount must be greater than zero");
+            }
+
             _userRepository.AddMoney(username, amount);
 
         }

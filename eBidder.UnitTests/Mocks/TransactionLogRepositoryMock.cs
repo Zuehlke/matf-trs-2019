@@ -19,6 +19,26 @@ namespace eBidder.UnitTests.Mocks
             fakeRepository.Setup(x => x.GetTransactionLogs())
                 .Returns(() => _logs);
 
+            fakeRepository.Setup(x =>
+                    x.LogUnsuccessfulTransaction(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+                .Callback((string userFrom, string userTo, double amount) => _logs.Add(new TransactionLog
+                {
+                    FromUser = userFrom,
+                    ToUser = userTo,
+                    Amount = amount,
+                    TransactionStatus = TransactionStatus.Unsuccessful
+                }));
+
+            fakeRepository.Setup(x =>
+                    x.LogSuccessfulTransaction(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+                .Callback((string userFrom, string userTo, double amount) => _logs.Add(new TransactionLog
+                {
+                    FromUser = userFrom,
+                    ToUser = userTo,
+                    Amount = amount,
+                    TransactionStatus = TransactionStatus.Successful
+                }));
+
             return fakeRepository.Object;
         }
     }

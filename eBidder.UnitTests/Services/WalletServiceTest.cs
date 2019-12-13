@@ -76,33 +76,111 @@ namespace eBidder.UnitTests.Services
         }
 
         [Test]
-        public void TEST1()
+        public void GivenUser_WhenMoneyTransferWithNegativeAmount_ThenUnsuccessfulMoneyTransferLogged()
         {
-            Assert.Fail();
+            // Arrange
+            var david = _userService.CreateUser("David", "123456");
+            var zoran = _userService.CreateUser("Zoran", "1231245");
+
+            // Act
+            Assert.Throws<InvalidOperationException>(() => _walletService.Transfer(david.Username, zoran.Username, -100));
+            var transactionLogs = _walletService.GetTransactionLogs().ToList();
+
+            // Assert
+            Assert.AreEqual(1, transactionLogs.Count());
+            var transactionLog = transactionLogs.FirstOrDefault();
+
+            Assert.AreEqual(TransactionStatus.Unsuccessful, transactionLog.TransactionStatus);
         }
 
         [Test]
-        public void TEST2()
+        public void GivenUser_WhenTransferMoreMoneyThanHeHasOnHisAccount_ThenInvalidOperationException()
         {
-            Assert.Fail();
+            // Arrange
+            var david = _userService.CreateUser("David", "123456");
+            var zoran = _userService.CreateUser("Zoran", "1231245");
+            _walletService.AddMoney(david.Username, 100);
+
+            // Act
+            Assert.Throws<InvalidOperationException>(() => _walletService.Transfer(david.Username, zoran.Username, 200));
+            var transactionLogs = _walletService.GetTransactionLogs().ToList();
+
+            // Assert
+            Assert.AreEqual(1, transactionLogs.Count());
+            var transactionLog = transactionLogs.FirstOrDefault();
+
+            Assert.AreEqual(TransactionStatus.Unsuccessful, transactionLog.TransactionStatus);
         }
 
         [Test]
-        public void TEST3()
+        public void GivenUser_WhenTransferMoneyToTheOtherUser_ThenAmountOfMoneyInWalletsOfBothUsersAsExpected()
         {
-            Assert.Fail();
+            // Arrange
+            var david = _userService.CreateUser("David", "123456");
+            var zoran = _userService.CreateUser("Zoran", "1231245");
+            _walletService.AddMoney(david.Username, 100);
+            _walletService.AddMoney(zoran.Username, 200);
+
+            // Act
+            _walletService.Transfer(david.Username, zoran.Username, 50);
+            var transactionLogs = _walletService.GetTransactionLogs().ToList();
+            var davidsWallet = _walletService.GetMoney(david.Username);
+            var zoransWallet = _walletService.GetMoney(zoran.Username);
+
+            // Assert
+            Assert.AreEqual(1, transactionLogs.Count);
+            var transactionLog = transactionLogs.FirstOrDefault();
+
+            Assert.AreEqual(50, davidsWallet);
+            Assert.AreEqual(250, zoransWallet);
+            Assert.AreEqual(TransactionStatus.Successful, transactionLog.TransactionStatus);
         }
 
         [Test]
-        public void TEST4()
+        public void GivenUser_WhenTransferMoneyToTheOtherUser_ThenTransactionSuccessful()
         {
-            Assert.Fail();
+            // Arrange
+            var david = _userService.CreateUser("David", "123456");
+            var zoran = _userService.CreateUser("Zoran", "1231245");
+            _walletService.AddMoney(david.Username, 100);
+            _walletService.AddMoney(zoran.Username, 200);
+
+            // Act
+            _walletService.Transfer(david.Username, zoran.Username, 50);
+            var transactionLogs = _walletService.GetTransactionLogs().ToList();
+
+            // Assert
+            Assert.AreEqual(1, transactionLogs.Count);
+            var transactionLog = transactionLogs.FirstOrDefault();
+
+            Assert.AreEqual(TransactionStatus.Successful, transactionLog.TransactionStatus);
+            Assert.AreEqual(david.Username, transactionLog.FromUser);
+            Assert.AreEqual(zoran.Username, transactionLog.ToUser);
+            Assert.AreEqual(50, transactionLog.Amount);
         }
 
         [Test]
-        public void TEST5()
+        public void GivenUser_WhenTransferMoreMoneyThanHeHasOnHisAccount_ThenTransactionUnsuccessful()
         {
-            Assert.Fail();
+            // Arrange
+            var david = _userService.CreateUser("David", "123456");
+            var zoran = _userService.CreateUser("Zoran", "1231245");
+            _walletService.AddMoney(david.Username, 100);
+            _walletService.AddMoney(zoran.Username, 200);
+
+            // Act
+            Assert.Throws<InvalidOperationException>(() =>
+                _walletService.Transfer(david.Username, zoran.Username, 150));
+            var transactionLogs = _walletService.GetTransactionLogs().ToList();
+
+            // Assert
+            Assert.AreEqual(1, transactionLogs.Count);
+            var transactionLog = transactionLogs.FirstOrDefault();
+
+            Assert.AreEqual(TransactionStatus.Unsuccessful, transactionLog.TransactionStatus);
+            Assert.AreEqual(david.Username, transactionLog.FromUser);
+            Assert.AreEqual(zoran.Username, transactionLog.ToUser);
+            Assert.AreEqual(150, transactionLog.Amount);
         }
     }
 }
