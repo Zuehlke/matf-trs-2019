@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace eBidder.UnitTests.Services
 {
+    [Ignore("Not executed on exam!")]
     public class WalletServiceTest
     {
         private IWalletService _walletService;

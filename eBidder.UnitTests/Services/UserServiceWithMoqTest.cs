@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace eBidder.UnitTests.Services
 {
+    [Ignore("Not executed on exam!")]
     [TestFixture(Category = "UserService tests with Moq")]
     public class UserServiceWithMoqTest
     {

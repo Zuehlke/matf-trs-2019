@@ -10,6 +10,7 @@ namespace eBidder.Repositories
         private IUserRepository _userRepository;
         private IAuditRepository _auditRepository;
         private ITransactionLogRepository _transactionLogRepository;
+        private IDeliveryRepository _deliveryRepository;
 
         public IAuctionRepository AuctionRepository => _auctionRepository ?? (_auctionRepository = new AuctionRepository(_context));
 
@@ -19,12 +20,13 @@ namespace eBidder.Repositories
 
         public ITransactionLogRepository TransactionLogRepository => _transactionLogRepository ?? (_transactionLogRepository = new TransactionLogRepository(_context));
 
+        public IDeliveryRepository DeliveryRepository => _deliveryRepository ?? (_deliveryRepository = new DeliveryRepository(_context));
 
         public void Save()
         {
             _context.SaveChanges();
         }
-
+        
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)

@@ -22,6 +22,8 @@ namespace eBidder.Domain
 
         public DbSet<TransactionLog> TransactionLogs { get; set; }
 
+        public DbSet<Delivery> Deliveries { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             SetAuctionEntity(modelBuilder);

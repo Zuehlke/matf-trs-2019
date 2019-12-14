@@ -9,6 +9,7 @@ using System.Linq;
 
 namespace eBidder.UnitTests.Services
 {
+    [Ignore("Not executed on exam!")]
     [TestFixture(Category = "AuctionService tests with Moq")]
     public class AuctionServiceWithMoqTest
     {

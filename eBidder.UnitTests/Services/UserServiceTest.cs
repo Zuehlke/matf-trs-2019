@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace eBidder.UnitTests.Services
 {
+    [Ignore("Not executed on exam!")]
     class UserServiceTest
     {
         [Test]
